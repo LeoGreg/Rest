@@ -29,7 +29,7 @@ public class TransferServiceImpl implements TransferService {
 
     @Override
     @Transactional
-    public Transfer transfer(Transfer transfer) throws RuntimeException, NumberSizeException, NotSignedUpCardException, ExpirationOutOfDateException, SameNumberException, WrongBalanceException {
+    public Transfer transfer(Transfer transfer) throws RuntimeException, NumberSizeException, NotSignedUpCardException /*ExpirationOutOfDateException*/, SameNumberException, WrongBalanceException, ExpirationOutOfDateException {
         SameNumberException.check(transfer.getGetterNumber() == transfer.getSenderNumber(), "same.number");
         NumberSizeException.check(transfer.getGetterNumber().length() != 16, "wrong.size.for.card");
         NumberSizeException.check(transfer.getSenderNumber().length() != 16, "wrong.size.for.card");
@@ -39,7 +39,7 @@ public class TransferServiceImpl implements TransferService {
         Card getter = cardRepository.getByNumber(transfer.getGetterNumber());
         WrongBalanceException.check(sender.getBalance() == 0 || sender.getBalance() - transfer.getCash() < 0, "wrong.balance");
         ExpirationOutOfDateException.check(new Date().getTime() - getter.getExpirationDate().getTime() >= 0, "card.expiration.outrun");
-        ExpirationOutOfDateException.check(new Date().getTime() - sender.getExpirationDate().getTime() >= 0, "card.expiration.outrun");
+       ExpirationOutOfDateException.check(new Date().getTime() - sender.getExpirationDate().getTime() >= 0, "card.expiration.outrun");
         sender.setBalance(sender.getBalance() - transfer.getCash());
         getter.setBalance(getter.getBalance() + transfer.getCash());
         cardRepository.save(sender);
@@ -47,21 +47,23 @@ public class TransferServiceImpl implements TransferService {
         return transferRepository.save(transfer);
     }
 
-    @Override
-    @Transactional
-    public Transfer enterInfoForTransferring(Transfer transfer) throws RuntimeException,SameNumberException, NumberSizeException, WrongBalanceException, NotSignedUpCardException, ExpirationOutOfDateException {
-        SameNumberException.check(transfer.getGetterNumber() == transfer.getSenderNumber(), "same.number");
-        NumberSizeException.check(transfer.getGetterNumber().length() != 16, "wrong.size.for.card");
-        NumberSizeException.check(transfer.getSenderNumber().length() != 16, "wrong.size.for.card");
-        NotSignedUpCardException.check(!cardRepository.existsByNumber(transfer.getSenderNumber()), "no.card");
-        NotSignedUpCardException.check(!cardRepository.existsByNumber(transfer.getGetterNumber()), "no.card");
-        Card sender = cardRepository.getByNumber(transfer.getSenderNumber());
-        Card getter = cardRepository.getByNumber(transfer.getGetterNumber());
-        WrongBalanceException.check(sender.getBalance() == 0 || sender.getBalance() - transfer.getCash() < 0, "wrong.balance");
-        ExpirationOutOfDateException.check(new Date().getTime() - getter.getExpirationDate().getTime() >= 0, "card.expiration.outrun");
-        ExpirationOutOfDateException.check(new Date().getTime() - sender.getExpirationDate().getTime() >= 0, "card.expiration.outrun");
-        return transferRepository.save(transfer);
-    }
+//    @Override
+//    @Transactional
+//    public Transfer enterInfoForTransferring(Transfer transfer) throws RuntimeException,SameNumberException, NumberSizeException, WrongBalanceException, NotSignedUpCardException/*ExpirationOutOfDateException*/ {
+//        SameNumberException.check(transfer.getGetterNumber() == transfer.getSenderNumber(), "same.number");
+//        NumberSizeException.check(transfer.getGetterNumber().length() != 16, "wrong.size.for.card");
+//        NumberSizeException.check(transfer.getSenderNumber().length() != 16, "wrong.size.for.card");
+//        NotSignedUpCardException.check(!cardRepository.existsByNumber(transfer.getSenderNumber()), "no.card");
+//        NotSignedUpCardException.check(!cardRepository.existsByNumber(transfer.getGetterNumber()), "no.card");
+//        Card sender = cardRepository.getByNumber(transfer.getSenderNumber());
+//        Card getter = cardRepository.getByNumber(transfer.getGetterNumber());
+//        WrongBalanceException.check(sender.getBalance() == 0 || sender.getBalance() - transfer.getCash() < 0, "wrong.balance");
+///*
+//        ExpirationOutOfDateException.check(new Date().getTime() - getter.getExpirationDate().getTime() >= 0, "card.expiration.outrun");
+//*/
+////        ExpirationOutOfDateException.check(new Date().getTime() - sender.getExpirationDate().getTime() >= 0, "card.expiration.outrun");
+//        return transferRepository.save(transfer);
+//    }
 
     @Override
     public List<Transfer> getTransferringHistory() throws RuntimeException{

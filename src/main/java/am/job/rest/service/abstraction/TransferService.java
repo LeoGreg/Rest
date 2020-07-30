@@ -9,9 +9,9 @@ import java.util.List;
 public interface TransferService {
     Transfer transfer(Transfer transfer) throws NumberSizeException, NotSignedUpCardException, ExpirationOutOfDateException, SameNumberException, WrongBalanceException;
 
-    @Transactional
+    /*@Transactional
     Transfer enterInfoForTransferring(Transfer transfer) throws SameNumberException, NumberSizeException, WrongBalanceException, NotSignedUpCardException, ExpirationOutOfDateException;
-
+*/
     List<Transfer> getTransferringHistory();
 
     Transfer getBySenderNumber(String number) throws NotFoundException;

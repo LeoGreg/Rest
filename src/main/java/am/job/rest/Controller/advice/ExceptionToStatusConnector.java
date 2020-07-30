@@ -49,7 +49,7 @@ public class ExceptionToStatusConnector {
 
     @ResponseBody
     @ExceptionHandler(AccessNumberContainsLettersException.class)
-    @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
+    @ResponseStatus(HttpStatus.EXPECTATION_FAILED)//417
 //409
     String accessIssue(AccessNumberContainsLettersException ex) {
         log.warn(">>>" + ex.getMessage() + ":");
@@ -66,7 +66,7 @@ public class ExceptionToStatusConnector {
 
     @ResponseBody
     @ExceptionHandler(WrongBalanceException.class)
-    @ResponseStatus(HttpStatus.PAYMENT_REQUIRED)
+    @ResponseStatus(HttpStatus.PAYMENT_REQUIRED)//402
 //409
     String balanceIssue(WrongBalanceException ex) {
         log.warn(">>>" + ex.getMessage() + ":");
@@ -76,7 +76,7 @@ public class ExceptionToStatusConnector {
 
     @ResponseBody
     @ExceptionHandler(ExpirationOutOfDateException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseStatus(HttpStatus.CONFLICT)//409
 //409
     String expire(ExpirationOutOfDateException ex) {
         log.warn(">>>" + ex.getMessage() + ":");
@@ -86,7 +86,7 @@ public class ExceptionToStatusConnector {
 
     @ResponseBody
     @ExceptionHandler(NotSignedUpCardException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.NOT_FOUND)//404
 //409
     String expire(NotSignedUpCardException ex) {
         log.warn(">>>" + ex.getMessage() + ":");
@@ -95,7 +95,7 @@ public class ExceptionToStatusConnector {
 
     @ResponseBody
     @ExceptionHandler(NumberSizeException.class)
-    @ResponseStatus(HttpStatus.PRECONDITION_FAILED)
+    @ResponseStatus(HttpStatus.PRECONDITION_FAILED)//412
     String expire(NumberSizeException ex) {
         log.warn(">>>" + ex.getMessage() + ":");
         return ex.getMessage();
@@ -103,8 +103,7 @@ public class ExceptionToStatusConnector {
 
     @ResponseBody
     @ExceptionHandler(SameNumberException.class)
-    @ResponseStatus(HttpStatus.CONFLICT)
-//409
+    @ResponseStatus(HttpStatus.CONFLICT)//409
     String expire(SameNumberException ex) {
         log.warn(">>>" + ex.getMessage() + ":");
         return ex.getMessage();

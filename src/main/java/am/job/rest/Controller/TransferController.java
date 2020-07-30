@@ -44,14 +44,14 @@ public class TransferController {
 
     @PostMapping(path = "/add", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity addCardInfo(@Valid @RequestBody Transfer transfer) throws WrongBalanceException, RuntimeException, ExpirationOutOfDateException, NotSignedUpCardException, NumberSizeException, SameNumberException {
-        return ResponseEntity.ok(transferService.enterInfoForTransferring(transfer));
-    }
-
-    @PutMapping(value = "/up/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity transfer(@Valid @RequestBody Transfer transfer, @PathVariable int id) throws SameNumberException,RuntimeException, WrongBalanceException, NotSignedUpCardException, NumberSizeException, ExpirationOutOfDateException {
-        transfer.setId(id);
         return ResponseEntity.ok(transferService.transfer(transfer));
     }
+
+//    @PutMapping(value = "/up/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity transfer(@Valid @RequestBody Transfer transfer, @PathVariable int id) throws SameNumberException,RuntimeException, WrongBalanceException, NotSignedUpCardException, NumberSizeException, ExpirationOutOfDateException {
+//        transfer.setId(id);
+//        return ResponseEntity.ok(transferService.transfer(transfer));
+//    }
 
 
 }
